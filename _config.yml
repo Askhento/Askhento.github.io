@@ -53,6 +53,6 @@ plugins:
 #   - vendor/gems/
 #   - vendor/ruby/
 
-# theme: jekyll-theme-yat
-theme: minima
+theme: jekyll-theme-yat
+# theme: minima
 #permalink: /:categories/:title/
