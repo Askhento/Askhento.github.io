@@ -30,7 +30,6 @@ url: https://askhento.github.io # the base hostname and protocol for your site, 
 github_username: askhento
 
 # Build settings
-# theme: minima
 plugins:
   - jekyll-feed
 
@@ -54,5 +53,6 @@ plugins:
 #   - vendor/gems/
 #   - vendor/ruby/
 
-theme: jekyll-theme-yat
+# theme: jekyll-theme-yat
+theme: minima
 #permalink: /:categories/:title/
