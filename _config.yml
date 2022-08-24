@@ -54,5 +54,8 @@ plugins:
 #   - vendor/ruby/
 
 theme: jekyll-theme-yat
+
 # theme: minima
 #permalink: /:categories/:title/
+
+issues_repo: Askhento/askhento.github.io
