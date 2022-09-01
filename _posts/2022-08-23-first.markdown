@@ -2,13 +2,9 @@
 layout: post
 title: "Welcome to my new site!"
 date: 2022-08-23T03:39:38+0300
-categories: [coding, glsl]
-tags: glsl
+categories: [first]
+tags: welcome
 comments_id: 1
 ---
 
 I am just learning, hope it will work better
-
-{% if page.comments_id %}
-{% include comments.html issue_id=page.comments_id %}
-{% endif %}
