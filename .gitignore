@@ -3,5 +3,7 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
-
+*.py
 .DS_Store
+Gemfile.lock
+.vscode
