@@ -54,7 +54,7 @@ VSCode will create tasks.json file inside .vscode folder and with some boilerpla
     {
       "label": "Create Post",
       "type": "shell",
-      "command": "python3 create_post.py ${input:title} ${input:comments} ${input:categories} ${input:tags}",
+      "command": "python3 create_post.py \"${input:title}\" ${input:comments} ${input:categories} ${input:tags}",
       "problemMatcher": []
     }
   ],

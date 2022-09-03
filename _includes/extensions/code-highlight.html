@@ -1,6 +1,11 @@
-<link
+<!-- <link
   rel="stylesheet"
   href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css"
+/> -->
+<link
+  rel="stylesheet"
+  title="Atom One Dark"
+  href="/assets/css/atom-one-dark.css"
 />
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <!-- and it's easy to individually load additional languages -->
@@ -22,17 +27,19 @@ return -%}
 <style>
 
   .copy-code-button {
-    background-color: #bcbcbc95; /* Green */
+    background-color: #bcbcbc95;
     border: 2px solid #5757578a;
     color: rgb(151, 151, 151);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
     padding: 15px 20px;
     text-align: center;
-    text-decoration: none;
-    display: block;
+    /* display: block; */
     font-size: 16px;
     border-radius: 2px;
     transition-duration: 0.4s;
-    float:right;
+    /* float:right; */
   }
 
   .copy-code-button:hover, .copy-code-button.copied{
@@ -93,13 +100,13 @@ return -%}
       // Set the button text to 'Can you click me?'
       copyCodeButton.innerText = "COPY!";
       copyCodeButton.classList.add("copy-code-button");
+      // copyCodeButton.classList.add("hljs");
 
-      var pre = block.parentElement;
-      pre.appendChild(copyCodeButton);
+      block.parentElement.appendChild(copyCodeButton);
 
       const code = block.innerText;
 
-      copyCodeButton.addEventListener("click", () => {
+      copyCodeButton.addEventListener("click", (event) => {
         // Copy the code to the user's clipboard
         window.navigator.clipboard.writeText(code);
 

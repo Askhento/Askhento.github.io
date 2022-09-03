@@ -1,0 +1,130 @@
+<style>
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  main {
+    width: 100vw;
+    z-index: 99;
+    position: absolute;
+  }
+</style>
+
+<script type="module">
+  import * as THREE from "/assets/scripts/three.js";
+
+  var scene, renderer, camera, controls, cube;
+
+  init();
+
+  function init() {
+    // const pageContent = document.getElementsByClassName("page-content")[0]
+    // let canvas = document.getElementById("canvas-holder")
+    const canvas = document.createElement("canvas");
+    canvas.id = "bg";
+    document.body.appendChild(canvas);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+    });
+
+    //this is to get the correct pixel detail on portable devices
+    renderer.setPixelRatio(window.devicePixelRatio);
+    //and this sets the canvas' size.
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0xaaaaaa, 0.01);
+
+    const spaceTexture = new THREE.TextureLoader().load(
+      "/assets/images/space-bg1.jpg"
+    );
+    scene.background = spaceTexture;
+
+    const gridHelper = new THREE.GridHelper(200, 50);
+    scene.add(gridHelper);
+
+    camera = new THREE.PerspectiveCamera(
+      35, //FOV
+      window.innerWidth / window.innerHeight, //aspect
+      1, //near clipping plane
+      100 //far clipping plane
+    );
+    camera.position.set(1, 1, 10);
+    let theta = 0.0;
+    const radius = 20.0;
+
+    // const controls = new THREE.OrbitControls( camera, renderer.domElement );
+    // controls.rotateSpeed = .5;
+    // controls.enableDamping = true;
+    // controls.dampingFactor = .05;
+
+    window.addEventListener(
+      "resize",
+      function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      },
+      false
+    );
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+
+    const sprite = new THREE.TextureLoader().load("/assets/images/Glow_02.png");
+
+    for (let i = 0; i < 100; i++) {
+      const x = 20 * Math.random() - 10;
+      const y = 20 * Math.random() - 10;
+      const z = 20 * Math.random() - 10;
+
+      vertices.push(x, y, z);
+    }
+
+    geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(vertices, 3)
+    );
+
+    const material = new THREE.PointsMaterial({
+      size: 2,
+      sizeAttenuation: true,
+      map: sprite,
+      transparent: true,
+      depthWrite: false,
+    });
+    // material.color.setHSL( 1.0, 0.3, 0.7 );
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    cube = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1, 1),
+      new THREE.MeshBasicMaterial()
+    );
+    scene.add(cube);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      // controls.update();
+      renderer.render(scene, camera);
+
+      cube.rotation.x += 0.001;
+      cube.rotation.y += 0.005;
+
+      theta += 0.1;
+
+      camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
+      // camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+      camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+      camera.lookAt(scene.position);
+
+      camera.updateMatrixWorld();
+      // camera.position.z += 0.1;
+    }
+
+    animate();
+  }
+</script>
