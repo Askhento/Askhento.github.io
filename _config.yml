@@ -28,6 +28,8 @@ url: https://askhento.github.io # the base hostname and protocol for your site, 
 # twitter_username: jekyllrb
 github_username: askhento
 
+night_mode: "on"
+
 # Build settings
 plugins:
   - jekyll-feed
