@@ -89,6 +89,7 @@ DEPENDENCIES
   http_parser.rb (~> 0.6.0)
   jekyll (~> 4.2.2)
   jekyll-feed (~> 0.12)
+  jekyll-spaceship
   jekyll-theme-yat
   tzinfo (~> 1.2)
   tzinfo-data

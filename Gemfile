@@ -19,6 +19,10 @@ gem "jekyll", "~> 4.2.2"
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   # gem "github-pages", "~> 227"
+  gem 'jekyll-spaceship'
+  gem "jekyll-theme-yat"
+
+
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -35,4 +39,3 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 # do not have a Java counterpart.
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 gem "webrick"
-gem "jekyll-theme-yat"
