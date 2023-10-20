@@ -7,3 +7,4 @@ vendor
 .DS_Store
 Gemfile.lock
 .vscode
+**notes.md
