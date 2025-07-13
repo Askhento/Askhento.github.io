@@ -43,7 +43,7 @@ Replicate node settings as shows.
 ![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-2.png)
 
 Code :
-```
+```hlsl
 unity_SHAr.w = Ambient.r;
 unity_SHAg.w = Ambient.g;
 unity_SHAb.w = Ambient.b;
