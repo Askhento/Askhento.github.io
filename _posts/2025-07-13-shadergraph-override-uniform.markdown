@@ -28,24 +28,24 @@ Sure you know how to do this.
 
 Result :
 
-![alt text](../images/2025-07-13-shadergraph-override-uniform-image.png)
+![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image.png)
 
 # Shader Graph
 
 Open shadergraph by double clicking.
 
-![alt text](../images/2025-07-13-shadergraph-override-uniform-image-1.png)
+![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-1.png)
 
 Add new property of type Color, drag it in empty place. 
 The main actor here will be a custom function node. Hit space and start typing "custom function". 
 Replicate node settings as shows.
 
-![alt text](../images/2025-07-13-shadergraph-override-uniform-image-2.png)
+![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-2.png)
 
 Ambient color stored in something called "Spherical Harmonics" coefficients. We only interested in last value of each color.
 The idea here is to passthrough any value so Out = In. Our trick will work only if custom node connected to any inputs of master.
 
-![alt text](../images/2025-07-13-shadergraph-override-uniform-image-3.png)
+![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-3.png)
 
 # Apply
 
@@ -53,7 +53,7 @@ Create new material : Right click shadergraph asset -> Creat -> Material. It wil
 
 Assing material to one of the meshes and try to change our color parameter.
 
-![alt text](../images/turtle_ambient_color0.gif)
+![alt text]({{site.url}}/assets/images/turtle_ambient_color0.gif)
 
 
 # Outro
