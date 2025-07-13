@@ -21,7 +21,7 @@ group :jekyll_plugins do
 #   gem "github-pages", "~> 227"
   gem 'jekyll-spaceship'
   gem "jekyll-theme-yat"
-
+  gem "kramdown-parser-gfm"
 
 end
 
