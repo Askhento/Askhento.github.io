@@ -42,6 +42,15 @@ Replicate node settings as shows.
 
 ![alt text]({{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-2.png)
 
+Code :
+```
+unity_SHAr.w = Ambient.r;
+unity_SHAg.w = Ambient.g;
+unity_SHAb.w = Ambient.b;
+
+Out=In;
+```
+
 Ambient color stored in something called "Spherical Harmonics" coefficients. We only interested in last value of each color.
 The idea here is to passthrough any value so Out = In. Our trick will work only if custom node connected to any inputs of master.
 
