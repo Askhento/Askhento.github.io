@@ -318,7 +318,8 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   http_parser.rb (~> 0.6.0)
-  jekyll-feed (~> 0.12)
+  jekyll
+  jekyll-feed
   jekyll-spaceship
   jekyll-theme-yat
   tzinfo (~> 1.2)
