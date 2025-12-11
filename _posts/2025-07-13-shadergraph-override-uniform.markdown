@@ -5,7 +5,7 @@ comments_id: 9
 published: true
 categories: ['unity']
 tags: ['unity', 'shadergraph', 'hacks']
-image: {{site.url}}/assets/images/2025-07-13-shadergraph-override-uniform-image-3.png
+image: /assets/images/2025-07-13-shadergraph-override-uniform-image-3.png
 ---
 
 # Intro 
@@ -71,6 +71,7 @@ Assing material to one of the meshes and try to change our color parameter.
 Congrats not you have one more powerfull tool to survive in URP nightmare!!!
 
 BTW this way you can read URP sources and learn any uniform value it uses and then change it's behaviour.
+
 
 
 
