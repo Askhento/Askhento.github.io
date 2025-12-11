@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>threejs-test | Askhat Mudarisov</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="threejs-test">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Hi this is some test scene with ThreeJS library.">
+<meta property="og:description" content="Hi this is some test scene with ThreeJS library.">
+<link rel="canonical" href="https://askhento.github.io/tests/2022/09/02/threejs-test.html">
+<meta property="og:url" content="https://askhento.github.io/tests/2022/09/02/threejs-test.html">
+<meta property="og:site_name" content="Askhat Mudarisov">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-09-02T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="threejs-test">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-09-02T00:00:00+00:00","datePublished":"2022-09-02T00:00:00+00:00","description":"Hi this is some test scene with ThreeJS library.","headline":"threejs-test","mainEntityOfPage":{"@type":"WebPage","@id":"https://askhento.github.io/tests/2022/09/02/threejs-test.html"},"url":"https://askhento.github.io/tests/2022/09/02/threejs-test.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="manifest" href="/assets/images/site.webmanifest">
+  <link rel="mask-icon" href="/assets/images/safari-pinned-tab.svg" color="#abd55b">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <script src="/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://askhento.github.io/feed.xml" title="Askhat Mudarisov">
+<!-- <link
+  rel="stylesheet"
+  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css"
+/> -->
+<link rel="stylesheet" title="Atom One Dark" href="/assets/css/atom-one-dark.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+  .copy-code-button {
+    background-color: #bcbcbc95;
+    border: 2px solid #5757578a;
+    color: rgb(151, 151, 151);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 15px 20px;
+    text-align: center;
+    /* display: block; */
+    font-size: 16px;
+    border-radius: 2px;
+    transition-duration: 0.4s;
+    /* float:right; */
+  }
+
+  .copy-code-button:hover, .copy-code-button.copied{
+    background-color: #f1f1f1; /* Green */
+    border: 2px solid #303030;
+    color: rgb(42, 42, 42);
+  }
+
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<script>
+  // Init highlight js
+  document.addEventListener("DOMContentLoaded", function (event) {
+    var els = document.querySelectorAll("pre code");
+
+    function addLangData(block) {
+      var outer = block.parentElement.parentElement.parentElement;
+      var lang = block.getAttribute("data-lang");
+      for (var i = 0; i < outer.classList.length; i++) {
+        var cls = outer.classList[i];
+        if (cls.startsWith("language-")) {
+          lang = cls;
+          break;
+        }
+      }
+      if (!lang) {
+        cls = block.getAttribute("class");
+        lang = cls ? cls.replace("hljs ", "") : "";
+      }
+      if (lang.startsWith("language-")) {
+        lang = lang.substr(9);
+      }
+      block.setAttribute("class", "hljs " + lang);
+      block.parentNode.setAttribute("data-lang", lang);
+    }
+
+    function addCopyButton(block) {
+      const copyCodeButton = document.createElement("button");
+      // Set the button text to 'Can you click me?'
+      copyCodeButton.innerText = "COPY!";
+      copyCodeButton.classList.add("copy-code-button");
+      // copyCodeButton.classList.add("hljs");
+
+      block.parentElement.appendChild(copyCodeButton);
+
+      const code = block.innerText;
+
+      copyCodeButton.addEventListener("click", (event) => {
+        // Copy the code to the user's clipboard
+        window.navigator.clipboard.writeText(code);
+
+        copyCodeButton.innerText = "DONE!";
+        copyCodeButton.classList.add("copied");
+
+        // After 2 seconds, reset the button to its initial UI
+        setTimeout(() => {
+          copyCodeButton.innerText = "COPY!";
+          copyCodeButton.classList.remove("copied");
+        }, 2000);
+      });
+    }
+
+    function addBadge(block) {
+      var enabled = ("true" || "true").toLowerCase();
+      if (enabled == "true") {
+        var pre = block.parentElement;
+        pre.classList.add("badge");
+      }
+    }
+
+    function handle(block) {
+      addLangData(block);
+      addBadge(block);
+      addCopyButton(block);
+      hljs.highlightBlock(block);
+    }
+
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      handle(el);
+    }
+  });
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/">
+  <img class="site-favicon" title="Askhat Mudarisov" src="" onerror="this.style.display='none'">
+  Askhat Mudarisov
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/archives.html">ARCHIVES</a><a class="page-link" href="/categories.html">CATEGORIES</a><a class="page-link" href="/home.html">HOME</a><a class="page-link" href="/tags.html">TAGS</a>
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('on' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">threejs-test</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-09-02T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 2, 2022
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/tags.html#glsl">#glsl</a><a class="post-tag" href="/tags.html#webgl">#webgl</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>Hi this is some test scene with ThreeJS library.</p>
+
+<p>I know it is a little bit distracting and I will not use it everywhere but still I dand a lot fun making it!</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Help!</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">THREE</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">/assets/scripts/three.js</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">scene</span><span class="p">,</span> <span class="nx">renderer</span><span class="p">,</span> <span class="nx">camera</span><span class="p">,</span> <span class="nx">controls</span><span class="p">,</span> <span class="nx">cube</span><span class="p">;</span>
+</code></pre></div></div>
+
+<style>
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  main {
+    width: 100vw;
+    z-index: 99;
+    position: absolute;
+  }
+
+  /* .post {
+    background-color: #000000ac;
+  } */
+</style>
+
+<!-- <script src="/assets/scripts/three.js"></script>
+<script src="/assets/scripts/OrbitControls.js"></script> -->
+
+<!-- shader for bird's position -->
+<script id="fragmentShaderPosition" type="x-shader/x-fragment">
+
+  uniform float time;
+  uniform float delta;
+
+  void main()	{
+
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      vec4 tmpPos = texture2D( texturePosition, uv );
+      vec3 position = tmpPos.xyz;
+      vec3 velocity = texture2D( textureVelocity, uv ).xyz;
+
+      float phase = tmpPos.w;
+
+      phase = mod( ( phase + delta +
+          length( velocity.xz ) * delta * 3. +
+          max( velocity.y, 0.0 ) * delta * 6. ), 62.83 );
+
+      gl_FragColor = vec4( position + velocity * delta * 15. , phase );
+
+  }
+</script>
+
+<!-- shader for bird's velocity -->
+<script id="fragmentShaderVelocity" type="x-shader/x-fragment">
+
+  uniform float time;
+  uniform float testing;
+  uniform float delta; // about 0.016
+  uniform float separationDistance; // 20
+  uniform float alignmentDistance; // 40
+  uniform float cohesionDistance; //
+  uniform float freedomFactor;
+  uniform vec3 predator;
+
+  const float width = resolution.x;
+  const float height = resolution.y;
+
+  const float PI = 3.141592653589793;
+  const float PI_2 = PI * 2.0;
+  // const float VISION = PI * 0.55;
+
+  float zoneRadius = 40.0;
+  float zoneRadiusSquared = 1600.0;
+
+  float separationThresh = 0.45;
+  float alignmentThresh = 0.65;
+
+  const float UPPER_BOUNDS = BOUNDS;
+  const float LOWER_BOUNDS = -UPPER_BOUNDS;
+
+  const float SPEED_LIMIT = 9.0;
+
+  float rand( vec2 co ){
+      return fract( sin( dot( co.xy, vec2(12.9898,78.233) ) ) * 43758.5453 );
+  }
+
+  void main() {
+
+      zoneRadius = separationDistance + alignmentDistance + cohesionDistance;
+      separationThresh = separationDistance / zoneRadius;
+      alignmentThresh = ( separationDistance + alignmentDistance ) / zoneRadius;
+      zoneRadiusSquared = zoneRadius * zoneRadius;
+
+
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      vec3 birdPosition, birdVelocity;
+
+      vec3 selfPosition = texture2D( texturePosition, uv ).xyz;
+      vec3 selfVelocity = texture2D( textureVelocity, uv ).xyz;
+
+      float dist;
+      vec3 dir; // direction
+      float distSquared;
+
+      float separationSquared = separationDistance * separationDistance;
+      float cohesionSquared = cohesionDistance * cohesionDistance;
+
+      float f;
+      float percent;
+
+      vec3 velocity = selfVelocity;
+
+      float limit = SPEED_LIMIT;
+
+      dir = predator * UPPER_BOUNDS - selfPosition;
+      dir.z = 0.;
+      // dir.z *= 0.6;
+      dist = length( dir );
+      distSquared = dist * dist;
+
+      float preyRadius = 150.0;
+      float preyRadiusSq = preyRadius * preyRadius;
+
+
+      // move birds away from predator
+      if ( dist < preyRadius ) {
+
+          f = ( distSquared / preyRadiusSq - 1.0 ) * delta * 100.;
+          velocity += normalize( dir ) * f;
+          limit += 5.0;
+      }
+
+
+      // if (testing == 0.0) {}
+      // if ( rand( uv + time ) < freedomFactor ) {}
+
+
+      // Attract flocks to the center
+      vec3 central = vec3( 0., 0., 0. );
+      dir = selfPosition - central;
+      dist = length( dir );
+
+      dir.y *= 2.5;
+      velocity -= normalize( dir ) * delta * 5.;
+
+      for ( float y = 0.0; y < height; y++ ) {
+          for ( float x = 0.0; x < width; x++ ) {
+
+              vec2 ref = vec2( x + 0.5, y + 0.5 ) / resolution.xy;
+              birdPosition = texture2D( texturePosition, ref ).xyz;
+
+              dir = birdPosition - selfPosition;
+              dist = length( dir );
+
+              if ( dist < 0.0001 ) continue;
+
+              distSquared = dist * dist;
+
+              if ( distSquared > zoneRadiusSquared ) continue;
+
+              percent = distSquared / zoneRadiusSquared;
+
+              if ( percent < separationThresh ) { // low
+
+                  // Separation - Move apart for comfort
+                  f = ( separationThresh / percent - 1.0 ) * delta;
+                  velocity -= normalize( dir ) * f;
+
+              } else if ( percent < alignmentThresh ) { // high
+
+                  // Alignment - fly the same direction
+                  float threshDelta = alignmentThresh - separationThresh;
+                  float adjustedPercent = ( percent - separationThresh ) / threshDelta;
+
+                  birdVelocity = texture2D( textureVelocity, ref ).xyz;
+
+                  f = ( 0.5 - cos( adjustedPercent * PI_2 ) * 0.5 + 0.5 ) * delta;
+                  velocity += normalize( birdVelocity ) * f;
+
+              } else {
+
+                  // Attraction / Cohesion - move closer
+                  float threshDelta = 1.0 - alignmentThresh;
+                  float adjustedPercent;
+                  if( threshDelta == 0. ) adjustedPercent = 1.;
+                  else adjustedPercent = ( percent - alignmentThresh ) / threshDelta;
+
+                  f = ( 0.5 - ( cos( adjustedPercent * PI_2 ) * -0.5 + 0.5 ) ) * delta;
+
+                  velocity += normalize( dir ) * f;
+
+              }
+
+          }
+
+      }
+
+
+
+      // this make tends to fly around than down or up
+      // if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
+
+      // Speed Limits
+      if ( length( velocity ) > limit ) {
+          velocity = normalize( velocity ) * limit;
+      }
+
+      gl_FragColor = vec4( velocity, 1.0 );
+
+  }
+</script>
+
+<script type="x-shader/x-vertex" id="birdVS">
+
+  attribute vec2 reference;
+  attribute float birdVertex;
+
+  attribute vec3 birdColor;
+
+  uniform sampler2D texturePosition;
+  uniform sampler2D textureVelocity;
+
+  varying vec4 vColor;
+  varying float z;
+
+  uniform float time;
+
+  void main() {
+
+      vec4 tmpPos = texture2D( texturePosition, reference );
+      vec3 pos = tmpPos.xyz;
+      vec3 velocity = normalize(texture2D( textureVelocity, reference ).xyz);
+
+      vec3 newPosition = position;
+
+      if ( birdVertex == 4.0 || birdVertex == 7.0 ) {
+          // flap wings
+          newPosition.y = sin( tmpPos.w ) * 5.;
+      }
+
+      newPosition = mat3( modelMatrix ) * newPosition;
+
+
+      velocity.z *= -1.;
+      float xz = length( velocity.xz );
+      float xyz = 1.;
+      float x = sqrt( 1. - velocity.y * velocity.y );
+
+      float cosry = velocity.x / xz;
+      float sinry = velocity.z / xz;
+
+      float cosrz = x / xyz;
+      float sinrz = velocity.y / xyz;
+
+      mat3 maty =  mat3(
+          cosry, 0, -sinry,
+          0    , 1, 0     ,
+          sinry, 0, cosry
+
+      );
+
+      mat3 matz =  mat3(
+          cosrz , sinrz, 0,
+          -sinrz, cosrz, 0,
+          0     , 0    , 1
+      );
+
+      newPosition =  maty * matz * newPosition;
+      newPosition += pos;
+
+      z = newPosition.z;
+
+      vColor = vec4( birdColor, 1.0 );
+      gl_Position = projectionMatrix *  viewMatrix  * vec4( newPosition, 1.0 );
+  }
+</script>
+
+<!-- bird geometry shader -->
+<script type="x-shader/x-fragment" id="birdFS">
+
+  varying vec4 vColor;
+  varying float z;
+
+  uniform vec3 color;
+
+  void main() {
+      // Fake colors for now
+      float z2 = 0.2 + ( 1000. - z ) / 1000. * vColor.x;
+      gl_FragColor = vec4( z2, z2, z2, 1. );
+
+  }
+</script>
+
+<!-- <script type="importmap">
+  {
+    "imports": {
+      "three": "../build/three.module.js",
+      "three/addons/": "./jsm/"
+    }
+  }
+</script> -->
+
+<script type="module">
+  const postBody = document.getElementsByClassName("post-content")[0];
+  postBody.style.backgroundColor = "black";
+
+  import * as THREE from "/assets/scripts/three.js";
+
+  import Stats from "/assets/scripts/stats.module.js";
+  import { GUI } from "/assets/scripts/lil-gui.module.min.js";
+
+  import { GPUComputationRenderer } from "/assets/scripts/GPUComputationRenderer.js";
+
+  /* TEXTURE WIDTH FOR SIMULATION */
+  const WIDTH = 32;
+
+  const BIRDS = WIDTH * WIDTH;
+
+  // Custom Geometry - using 3 triangles each. No UVs, no normals currently.
+  class BirdGeometry extends THREE.BufferGeometry {
+    constructor() {
+      super();
+
+      const trianglesPerBird = 3;
+      const triangles = BIRDS * trianglesPerBird;
+      const points = triangles * 3;
+
+      const vertices = new THREE.BufferAttribute(
+        new Float32Array(points * 3),
+        3
+      );
+      const birdColors = new THREE.BufferAttribute(
+        new Float32Array(points * 3),
+        3
+      );
+      const references = new THREE.BufferAttribute(
+        new Float32Array(points * 2),
+        2
+      );
+      const birdVertex = new THREE.BufferAttribute(new Float32Array(points), 1);
+
+      this.setAttribute("position", vertices);
+      this.setAttribute("birdColor", birdColors);
+      this.setAttribute("reference", references);
+      this.setAttribute("birdVertex", birdVertex);
+
+      // this.setAttribute( 'normal', new Float32Array( points * 3 ), 3 );
+
+      let v = 0;
+
+      function verts_push() {
+        for (let i = 0; i < arguments.length; i++) {
+          vertices.array[v++] = arguments[i];
+        }
+      }
+
+      const wingsSpan = 20;
+
+      for (let f = 0; f < BIRDS; f++) {
+        // Body
+
+        verts_push(0, -0, -20, 0, 4, -20, 0, 0, 30);
+
+        // Wings
+
+        verts_push(0, 0, -15, -wingsSpan, 0, 0, 0, 0, 15);
+
+        verts_push(0, 0, 15, wingsSpan, 0, 0, 0, 0, -15);
+      }
+
+      for (let v = 0; v < triangles * 3; v++) {
+        const triangleIndex = ~~(v / 3);
+        const birdIndex = ~~(triangleIndex / trianglesPerBird);
+        const x = (birdIndex % WIDTH) / WIDTH;
+        const y = ~~(birdIndex / WIDTH) / WIDTH;
+
+        const c = new THREE.Color(0x444444 + (~~(v / 9) / BIRDS) * 0x666666);
+
+        birdColors.array[v * 3 + 0] = c.r;
+        birdColors.array[v * 3 + 1] = c.g;
+        birdColors.array[v * 3 + 2] = c.b;
+
+        references.array[v * 2] = x;
+        references.array[v * 2 + 1] = y;
+
+        birdVertex.array[v] = v % 9;
+      }
+
+      this.scale(0.2, 0.2, 0.2);
+    }
+  }
+
+  //
+
+  let container, stats;
+  let camera, scene, renderer;
+  let mouseX = 0,
+    mouseY = 0;
+
+  let windowHalfX = window.innerWidth / 2;
+  let windowHalfY = window.innerHeight / 2;
+
+  const BOUNDS = 1000,
+    BOUNDS_HALF = BOUNDS / 2;
+
+  let last = performance.now();
+
+  let gpuCompute;
+  let velocityVariable;
+  let positionVariable;
+  let positionUniforms;
+  let velocityUniforms;
+  let birdUniforms;
+
+  init();
+  animate();
+
+  function init() {
+    // container = document.createElement( 'div' );
+    // document.body.appendChild( container );
+
+    camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      1,
+      3000
+    );
+    camera.position.z = 350;
+
+    scene = new THREE.Scene();
+
+    const spaceTexture = new THREE.TextureLoader().load(
+      "/assets/images/space-bg2.jpg"
+    );
+    scene.background = spaceTexture;
+
+    scene.fog = new THREE.Fog(0xffffff, 100, 1000);
+
+    const canvas = document.createElement("canvas");
+    canvas.id = "bg";
+    document.body.appendChild(canvas);
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+    });
+
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    initComputeRenderer();
+
+    stats = new Stats();
+    canvas.appendChild(stats.dom);
+
+    canvas.style.touchAction = "none";
+    canvas.parentElement.addEventListener("pointermove", onPointerMove);
+
+    //
+
+    window.addEventListener("resize", onWindowResize);
+
+    const gui = new GUI();
+
+    const effectController = {
+      separation: 20.0,
+      alignment: 20.0,
+      cohesion: 20.0,
+      freedom: 0.75,
+    };
+
+    const valuesChanger = function () {
+      velocityUniforms["separationDistance"].value =
+        effectController.separation;
+      velocityUniforms["alignmentDistance"].value = effectController.alignment;
+      velocityUniforms["cohesionDistance"].value = effectController.cohesion;
+      velocityUniforms["freedomFactor"].value = effectController.freedom;
+    };
+
+    valuesChanger();
+
+    gui
+      .add(effectController, "separation", 0.0, 100.0, 1.0)
+      .onChange(valuesChanger);
+    gui
+      .add(effectController, "alignment", 0.0, 100, 0.001)
+      .onChange(valuesChanger);
+    gui
+      .add(effectController, "cohesion", 0.0, 100, 0.025)
+      .onChange(valuesChanger);
+    gui.close();
+
+    initBirds();
+  }
+
+  function initComputeRenderer() {
+    gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+
+    if (renderer.capabilities.isWebGL2 === false) {
+      gpuCompute.setDataType(THREE.HalfFloatType);
+    }
+
+    const dtPosition = gpuCompute.createTexture();
+    const dtVelocity = gpuCompute.createTexture();
+    fillPositionTexture(dtPosition);
+    fillVelocityTexture(dtVelocity);
+
+    velocityVariable = gpuCompute.addVariable(
+      "textureVelocity",
+      document.getElementById("fragmentShaderVelocity").textContent,
+      dtVelocity
+    );
+    positionVariable = gpuCompute.addVariable(
+      "texturePosition",
+      document.getElementById("fragmentShaderPosition").textContent,
+      dtPosition
+    );
+
+    gpuCompute.setVariableDependencies(velocityVariable, [
+      positionVariable,
+      velocityVariable,
+    ]);
+    gpuCompute.setVariableDependencies(positionVariable, [
+      positionVariable,
+      velocityVariable,
+    ]);
+
+    positionUniforms = positionVariable.material.uniforms;
+    velocityUniforms = velocityVariable.material.uniforms;
+
+    positionUniforms["time"] = { value: 0.0 };
+    positionUniforms["delta"] = { value: 0.0 };
+    velocityUniforms["time"] = { value: 1.0 };
+    velocityUniforms["delta"] = { value: 0.0 };
+    velocityUniforms["testing"] = { value: 1.0 };
+    velocityUniforms["separationDistance"] = { value: 1.0 };
+    velocityUniforms["alignmentDistance"] = { value: 1.0 };
+    velocityUniforms["cohesionDistance"] = { value: 1.0 };
+    velocityUniforms["freedomFactor"] = { value: 1.0 };
+    velocityUniforms["predator"] = { value: new THREE.Vector3() };
+    velocityVariable.material.defines.BOUNDS = BOUNDS.toFixed(2);
+
+    velocityVariable.wrapS = THREE.RepeatWrapping;
+    velocityVariable.wrapT = THREE.RepeatWrapping;
+    positionVariable.wrapS = THREE.RepeatWrapping;
+    positionVariable.wrapT = THREE.RepeatWrapping;
+
+    const error = gpuCompute.init();
+
+    if (error !== null) {
+      console.error(error);
+    }
+  }
+
+  function initBirds() {
+    const geometry = new BirdGeometry();
+
+    // For Vertex and Fragment
+    birdUniforms = {
+      color: { value: new THREE.Color(0xff2200) },
+      texturePosition: { value: null },
+      textureVelocity: { value: null },
+      time: { value: 1.0 },
+      delta: { value: 0.0 },
+    };
+
+    // THREE.ShaderMaterial
+    const material = new THREE.ShaderMaterial({
+      uniforms: birdUniforms,
+      vertexShader: document.getElementById("birdVS").textContent,
+      fragmentShader: document.getElementById("birdFS").textContent,
+      side: THREE.DoubleSide,
+    });
+
+    const birdMesh = new THREE.Mesh(geometry, material);
+    birdMesh.rotation.y = Math.PI / 2;
+    birdMesh.matrixAutoUpdate = false;
+    birdMesh.updateMatrix();
+
+    scene.add(birdMesh);
+  }
+
+  function fillPositionTexture(texture) {
+    const theArray = texture.image.data;
+
+    for (let k = 0, kl = theArray.length; k < kl; k += 4) {
+      const x = Math.random() * BOUNDS - BOUNDS_HALF;
+      const y = Math.random() * BOUNDS - BOUNDS_HALF;
+      const z = Math.random() * BOUNDS - BOUNDS_HALF;
+
+      theArray[k + 0] = x;
+      theArray[k + 1] = y;
+      theArray[k + 2] = z;
+      theArray[k + 3] = 1;
+    }
+  }
+
+  function fillVelocityTexture(texture) {
+    const theArray = texture.image.data;
+
+    for (let k = 0, kl = theArray.length; k < kl; k += 4) {
+      const x = Math.random() - 0.5;
+      const y = Math.random() - 0.5;
+      const z = Math.random() - 0.5;
+
+      theArray[k + 0] = x * 10;
+      theArray[k + 1] = y * 10;
+      theArray[k + 2] = z * 10;
+      theArray[k + 3] = 1;
+    }
+  }
+
+  function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function onPointerMove(event) {
+    if (event.isPrimary === false) return;
+
+    mouseX = event.clientX - windowHalfX;
+    mouseY = event.clientY - windowHalfY;
+  }
+
+  //
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    render();
+    stats.update();
+  }
+
+  function render() {
+    const now = performance.now();
+    let delta = (now - last) / 1000;
+
+    if (delta > 1) delta = 1; // safety cap on large deltas
+    last = now;
+
+    positionUniforms["time"].value = now;
+    positionUniforms["delta"].value = delta;
+    velocityUniforms["time"].value = now;
+    velocityUniforms["delta"].value = delta;
+    birdUniforms["time"].value = now;
+    birdUniforms["delta"].value = delta;
+
+    velocityUniforms["predator"].value.set(
+      (0.5 * mouseX) / windowHalfX,
+      (-0.5 * mouseY) / windowHalfY,
+      0
+    );
+
+    mouseX = 10000;
+    mouseY = 10000;
+
+    gpuCompute.compute();
+
+    birdUniforms["texturePosition"].value =
+      gpuCompute.getCurrentRenderTarget(positionVariable).texture;
+    birdUniforms["textureVelocity"].value =
+      gpuCompute.getCurrentRenderTarget(velocityVariable).texture;
+
+    renderer.render(scene, camera);
+  }
+</script>
+
+
+
+    </div>
+
+</article>
+<div class="post-comments">
+        
+
+<section id="comments">
+  <div class="comment-actions">
+    <h2>Comments <span id="comments-count"></span>
+</h2>
+    <a class="button" href="https://github.com/Askhento/askhento.github.io/issues/5">Post comment</a>
+  </div>
+  <div id="comments-wrapper">Loading...</div>
+</section>
+
+<!-- Comments script -->
+<script>
+  const loadScript = (src) => {
+    const scriptElement = document.createElement("script");
+    document.body.appendChild(scriptElement);
+
+    return new Promise((resolve) => {
+      scriptElement.onload = resolve;
+
+      // Important to register onload before setting src
+      scriptElement.src = src;
+    });
+  };
+
+  const commentsSection = document.getElementById("comments");
+  const commentsWrapper = commentsSection.querySelector("#comments-wrapper");
+  const commentsCount = commentsSection.querySelector("#comments-count");
+
+  const fetchComments = async () => {
+    try {
+      const commentsURL =
+        "https://api.github.com/repos/Askhento/askhento.github.io/issues/5/comments";
+      const comments = await (await fetch(commentsURL)).json();
+      initRenderComments(comments);
+    } catch (e) {
+      commentsWrapper.innerHTML = `<p>Unable to retrieve the comments for this post.</p>`;
+    }
+  };
+
+  const commentScripts = [
+    "https://unpkg.com/marked@0.3.6/marked.min.js",
+    "https://unpkg.com/dompurify@1.0.8/dist/purify.min.js",
+    "https://unpkg.com/dayjs@1.8.21/dayjs.min.js",
+    "https://unpkg.com/dayjs@1.7.8/plugin/relativeTime.js",
+  ];
+
+  // Reminder: this gets called when the viewport intersects with the comments section
+  const initRenderComments = async (comments) => {
+    if (!comments.length) {
+      commentsWrapper.innerHTML = `<p>No comments yet 👀 Be the first to post!</p>`;
+      return;
+    }
+
+    // Load all comment script dependencies async
+    await Promise.all(commentScripts.map((script) => loadScript(script)));
+    renderComments(comments);
+  };
+
+  const renderComments = (comments) => {
+    // load the relativeTime plugin for dayjs so we can express dates relative to now
+    dayjs.extend(dayjs_plugin_relativeTime);
+
+    commentsCount.innerText = `(${comments.length})`;
+
+    const commentsList = document.createElement("ol");
+    commentsList.className = "comments-list";
+    commentsList.setAttribute("aria-label", "Comments on this blog post");
+
+    commentsList.innerHTML = comments
+      .sort((comment1, comment2) => {
+        return comment1.created_at < comment2.created_at ? 1 : -1;
+      })
+      .map((comment) => {
+        const datePosted = dayjs(comment.created_at).fromNow();
+        const user = comment.user;
+        const body = DOMPurify.sanitize(marked(comment.body));
+        const postedByAuthor = comment.author_association === "OWNER";
+        const edited = comment.created_at !== comment.updated_at;
+
+        /*
+<img src="${
+  user.avatar_url
+}" alt="" aria-hidden="true" class="post-comment-avatar circle">
+${
+  postedByAuthor
+    ? '<span class="post-comment-author" data-shape="round" data-size="xs">Author</span>'
+    : ""
+}
+${
+  edited
+    ? `<span class="post-comment-edited">Edited</span>`
+    : ""
+}
+*/
+        return `<li class="post">
+                    <article class="post-comment">
+                        <header class="flex align-center flex-wrap gap-0 relative">
+                            
+                            <a
+                                href="https://github.com/${user.login}"
+                                class="heading"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
+                                ${user.login}
+                            </a>
+                            <time datetime="${comment.created_at}">${datePosted}</time></div>
+             
+                        
+                        </header>
+                        <div class="post-comment-body">${comment.body}</div>
+                    </article>
+                 </li>`;
+      })
+      .join("");
+
+    commentsWrapper.innerHTML = "";
+    commentsWrapper.appendChild(commentsList);
+  };
+
+  const commentsObserver = new IntersectionObserver(
+    (entries, self) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          fetchComments(); // this is the important part
+          self.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: "200px 0px 0px 0px" }
+  );
+
+  commentsObserver.observe(commentsSection);
+</script>
+ 
+    </div>
+
+    <div class="post-nav">
+<a class="previous" href="/hacks/webdev/2022/09/01/comments-generation.html" title="Automate post creation with github comments">Automate post creation with github comments...</a><a class="next" href="/tutorial/2022/10/07/navigation-arrow.html" title="Navigation Arrow">Navigation Arrow</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+          <a class="post-link" href="/hacks/webdev/2022/09/01/comments-generation.html" title="Navigation Arrow">Automate post creation with github comments</a>
+        </li>
+<li>
+          <a class="post-link" href="/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html" title="Navigation Arrow">Matrix transformations for visual learners</a>
+        </li>
+<li>
+          <a class="post-link" href="/tutorial/2022/10/07/navigation-arrow.html" title="Navigation Arrow">Navigation Arrow</a>
+        </li>
+<li>
+          <a class="post-link" href="/tests/2022/09/02/threejs-test.html" title="Navigation Arrow">threejs-test</a>
+        </li>
+</ul>
+    </div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div></div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

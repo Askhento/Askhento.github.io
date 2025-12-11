@@ -1,0 +1,1145 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="https://askhento.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://askhento.github.io/" rel="alternate" type="text/html" /><updated>2025-12-11T02:39:18+00:00</updated><id>https://askhento.github.io/feed.xml</id><title type="html">Askhat Mudarisov</title><subtitle>My personal blog about coding, electronics  Some tags : javascript, c++, python, glsl, hlsl, shaders, arduino, esp8266</subtitle><entry><title type="html">shadergraph-override-uniform</title><link href="https://askhento.github.io/unity/2025/07/13/shadergraph-override-uniform.html" rel="alternate" type="text/html" title="shadergraph-override-uniform" /><published>2025-07-13T00:00:00+00:00</published><updated>2025-07-13T00:00:00+00:00</updated><id>https://askhento.github.io/unity/2025/07/13/shadergraph-override-uniform</id><content type="html" xml:base="https://askhento.github.io/unity/2025/07/13/shadergraph-override-uniform.html"><![CDATA[<h1 id="intro">Intro</h1>
+
+<p>Sometimes you want to change how URP shader will perform calculations and of course you can change the source
+code of URP package and then pass your custom data. Hovewer if you don’t want to go this way and stay inside
+shadergraph (URP package contains a lot of hlsl text based shaders) there is a somewhat “hacky” way. 
+Of course Unity will never tell you how to do this!</p>
+
+<p>In this article I will show you how to override ambient color per object and lighting functions (which is not directrly accesable)
+will use our custom value.</p>
+
+<h1 id="preparation">Preparation</h1>
+
+<p>Sure you know how to do this.</p>
+<ul>
+  <li>Create basic scene.</li>
+  <li>Add a couple of objects, I use a couple of spheres.</li>
+  <li>Set some ambient color Window -&gt; Rendering -&gt; Lighting -&gt; Environment -&gt; Environment Lighting -&gt; Source = solid, Color = (I choose red)</li>
+  <li>Create lit shadergraph Right click -&gt; Create -&gt; Shader Graph -&gt; URP -&gt; Lit Shader -&gt; Name it!</li>
+</ul>
+
+<p>Result :</p>
+
+<p><img src="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image.png" alt="alt text" /></p>
+
+<h1 id="shader-graph">Shader Graph</h1>
+
+<p>Open shadergraph by double clicking.</p>
+
+<p><img src="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image-1.png" alt="alt text" /></p>
+
+<p>Add new property of type Color, drag it in empty place. 
+The main actor here will be a custom function node. Hit space and start typing “custom function”. 
+Replicate node settings as shows.</p>
+
+<p><img src="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image-2.png" alt="alt text" /></p>
+
+<p>Code :</p>
+<div class="language-hlsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">unity_SHAr</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">Ambient</span><span class="p">.</span><span class="n">r</span><span class="p">;</span>
+<span class="n">unity_SHAg</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">Ambient</span><span class="p">.</span><span class="n">g</span><span class="p">;</span>
+<span class="n">unity_SHAb</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">Ambient</span><span class="p">.</span><span class="n">b</span><span class="p">;</span>
+
+<span class="n">Out</span><span class="o">=</span><span class="n">In</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Ambient color stored in something called “Spherical Harmonics” coefficients. We only interested in last value of each color.
+The idea here is to passthrough any value so Out = In. Our trick will work only if custom node connected to any inputs of master.</p>
+
+<p><img src="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image-3.png" alt="alt text" /></p>
+
+<h1 id="apply">Apply</h1>
+
+<p>Create new material : Right click shadergraph asset -&gt; Creat -&gt; Material. It will assign our newly created shader with default parameters.</p>
+
+<p>Assing material to one of the meshes and try to change our color parameter.</p>
+
+<p><img src="https://askhento.github.io/assets/images/turtle_ambient_color0.gif" alt="alt text" /></p>
+
+<h1 id="outro">Outro</h1>
+
+<p>Congrats not you have one more powerfull tool to survive in URP nightmare!!!</p>
+
+<p>BTW this way you can read URP sources and learn any uniform value it uses and then change it’s behaviour.</p>]]></content><author><name></name></author><category term="unity" /><category term="unity" /><category term="shadergraph" /><category term="hacks" /><summary type="html"><![CDATA[Intro Sometimes you want to change how URP shader will perform calculations and of course you can change the source code of URP package and then pass your custom data. Hovewer if you don’t want to go this way and stay inside shadergraph (URP package contains a lot of hlsl text based shaders) there is a somewhat “hacky” way. Of course Unity will never tell you how to do this! In this article I will show you how to override ambient color per object and lighting functions (which is not directrly accesable) will use our custom value. Preparation Sure you know how to do this. Create basic scene. Add a couple of objects, I use a couple of spheres. Set some ambient color Window -&gt; Rendering -&gt; Lighting -&gt; Environment -&gt; Environment Lighting -&gt; Source = solid, Color = (I choose red) Create lit shadergraph Right click -&gt; Create -&gt; Shader Graph -&gt; URP -&gt; Lit Shader -&gt; Name it! Result : Shader Graph Open shadergraph by double clicking. Add new property of type Color, drag it in empty place. The main actor here will be a custom function node. Hit space and start typing “custom function”. Replicate node settings as shows. Code : unity_SHAr.w = Ambient.r; unity_SHAg.w = Ambient.g; unity_SHAb.w = Ambient.b; Out=In; Ambient color stored in something called “Spherical Harmonics” coefficients. We only interested in last value of each color. The idea here is to passthrough any value so Out = In. Our trick will work only if custom node connected to any inputs of master. Apply Create new material : Right click shadergraph asset -&gt; Creat -&gt; Material. It will assign our newly created shader with default parameters. Assing material to one of the meshes and try to change our color parameter. Outro Congrats not you have one more powerfull tool to survive in URP nightmare!!! BTW this way you can read URP sources and learn any uniform value it uses and then change it’s behaviour.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image-3.png" /><media:content medium="image" url="https://askhento.github.io/assets/images/2025-07-13-shadergraph-override-uniform-image-3.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Matrix transformations for visual learners</title><link href="https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html" rel="alternate" type="text/html" title="Matrix transformations for visual learners" /><published>2022-10-11T00:00:00+00:00</published><updated>2022-10-11T00:00:00+00:00</updated><id>https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners</id><content type="html" xml:base="https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html"><![CDATA[<p>In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.</p>
+
+<h3 id="initial" class="state_transition">What is a Matrix?</h3>
+
+<p>Matrix is not film, sorry.
+Matrix is like a table of numbers with one or more dimentions. They have some rules that we have to obey in order to use them in our advantage.</p>
+
+<p>In computer graphics you will see that 4x4 matrix in use, they can express <span style="color:green">translate</span>, <span style="color:purple">scale</span> and <span style="color:red">rotation</span> at the same time and using only multiplication to apply on vectors and combine together.</p>
+
+<p><span id="example_matrix_mathjax"></span></p>
+
+<p>Vectors are written with 4 elements : $\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}$</p>
+
+<p>We use 4x4 matrix because this is a nifty trick to use multiplication for all transformations. Last column of the matrix above does not have a physical maeaning as <span style="color:green">translate</span>, <span style="color:purple">scale</span> and <span style="color:red">rotation</span>, but it makes math so simple!</p>
+
+<p>There is two distinct options to write down a matrix and a vector - row and column major. This little thing is really important because if you mess with it you will get unpredictable result in your shaders.</p>
+
+<p>Math notation commonly use row-major vector looks like this : $\begin{bmatrix} x &amp; y &amp; z &amp; 1 \end{bmatrix}$</p>
+
+<p>OpenGL uses column-major and I will use it also: $\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}$</p>
+
+<p>You may ask yourself, does this matter? Aren’t they the same thing? I will tell you that they are completely different. Matrices is all about structure and order, and you should care about this things if you want to use their power.</p>
+
+<p>In order to transform a point by 4x4 matrix in column major form you need to apply matrix to the left :</p>
+
+<h3 id="how-to-use-matrix">How to use matrix</h3>
+
+<p>In order to use/apply a matrix you need to multiply it from the correct side of matrix or vector. Let’s say</p>
+
+<h3 id="why-do-we-need-matrix">Why do we need Matrix?</h3>
+
+<p>First time I saw a matrix I thought to myself that it is a very useless thing in math.
+Years came by and now I feel that I want to use matrix transformations everywhere! This is very handy mathematical tool that can abstract cumbersome computation away from your mind.</p>
+
+<h3 id="rules">Rules:</h3>
+
+<p>The only rule we need to know is that matrix mulitplication is not commutative :</p>
+
+<ul>
+  <li>$ A \cdot B \neq B \cdot A $</li>
+</ul>
+
+<details> 
+  <summary>There is some other rules which you can learn here. </summary>
+<h3> Commutative laws </h3>
+
+Addition order does not matter, but multiplication does. Very important one!
+
+<ul>
+    <li> $ A+B = B+A $ </li>
+    <li> $ A \cdot B \neq B \cdot A $ </li>
+</ul>
+
+<h3> Associative </h3>
+
+Group operations in any order you find useful
+
+<ul>
+    <li> $ A \cdot B \cdot C = A \cdot (B \cdot C) = (A \cdot B) \cdot C $ </li>
+    <li> $ A + B + C = A + (B + C) = (A + B) + C $ </li>
+</ul>
+<h3> Distributive </h3>
+Undo brackets as usual.
+<ul>
+    <li> $ A \cdot (B+C) = A \cdot B + A \cdot C $ </li>
+</ul>
+
+</details>
+
+<h3 id="initial_state" class="state_transition">Model Matrix</h3>
+<p>Here you can see the inital state of the scene with a textured cube and the camera. They both have the same transformartion matrix :</p>
+
+<p><span id="identity_matrix_mathjax"></span></p>
+
+<p>Which is Identity matrix. If you multiply this matrix with any other you will get the same matrix as before.</p>
+
+<p><button type="button" id="initial_btn" class="btn btn-primary active">Show Initial State</button></p>
+
+<h3 id="model_matrix" class="state_transition">Model Matrix</h3>
+
+<p>Every object in the scene will have a Model Matrix which represents all the transformations required to put object in world space for rendering.</p>
+
+<p><span id="model_matrix_mathjax"></span></p>
+
+<p><button type="button" id="model_btn" class="btn btn-primary active">Move to World Space</button></p>
+
+<h3 id="view_matrix" class="state_transition">View Matrix</h3>
+
+<p><button type="button" id="view_btn" class="btn btn-primary active">Move to Camera Space</button></p>
+
+<h3 id="projection_matrix" class="state_transition">Projection Matrix</h3>
+
+<p><button type="button" id="proj_btn" class="btn btn-primary active">Move to Projection Space</button></p>
+
+<style>
+    #threejs_container {
+        width: 50%;
+        /* height: 2500px; */
+        /* align-items: stretch; */
+        /* pointer-events: none; */
+    }
+
+    #threejs_wrapper {
+        display: flex;
+        justify-content: center;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 100px;
+    }
+
+    #threejs_canvas {
+        /* display: block; */
+        position: relative;
+        /* width: 95%;
+        height: 0%; */
+        width: 95%;
+        /* float: right; */
+        /* top: 0; */
+
+        /* padding-bottom: 60%; */
+        /* z-index: -1; */
+        pointer-events: auto;
+        border: solid 2px whitesmoke;
+        border-radius: 5px;
+    }
+
+    #threejs_labels {
+        height: 100%;
+        width: 100%;
+        color: white;
+    }
+
+    #transform_preview {
+        position: absolute;
+        top: 100%;
+        /* width: 200px; */
+        /* height: 300px; */
+    }
+
+    .wrapper {
+        max-width: none;
+    }
+
+    #gui {
+        top: 100px;
+        position: sticky;
+        position: -webkit-sticky;
+        float: right;
+    }
+</style>
+
+<!-- <canvas id="threejs_canvas"></canvas> -->
+
+<!-- <script src="https://unpkg.com/three@0.145.0/build/three.js"></script> -->
+<!-- <script src="/assets/scripts/three.js"></script> -->
+
+<script src="/assets/scripts/threejs_boilerplate.js" type="module"></script>
+
+<script id="fragmentShader-cube" type="x-shader/x-fragment">
+
+uniform float time;
+uniform float delta;
+
+varying vec2 vUV;
+varying vec4 vPos;
+
+uniform sampler2D map;
+
+void main()	{
+    vec3 pos = vPos.xyz / vPos.w;
+    
+    float edge = cos(time) * 0.5 + 1.5;
+    edge = 1.0;
+    vec3 outside = abs(pos); // step(vec3(edge), );
+    float outStep = max(max(outside.x, outside.y), outside.z);
+    vec4 diff = texture2D(map, vUV);
+    vec3 col  = mix(diff.xyz, diff.xyz * vec3(1.0, 0.0, 0.0), step(edge, outStep));
+    //if (!gl_FrontFacing) col = vec3(1.0, 0.0, 1.0);
+
+    gl_FragColor = vec4(col, 1.0);
+    //if (outStep > 0.0) discard;
+    gl_FragColor = diff;
+}
+</script>
+
+<script id="vertexShader-cube" type="x-shader/x-vertex">
+
+varying vec2 vUV;
+varying vec4 vPos;
+
+  void main() {
+    vUV = uv;
+
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    //modelPosition.xyz /= modelPosition.w;
+
+    //modelPosition.w = 1.0;
+    vPos = modelPosition;
+    gl_Position = projectionMatrix * viewMatrix * modelPosition; 
+  }
+</script>
+
+<script src="/assets/scripts/tutorials/matrix_transform_visual.js" type="module">
+</script>]]></content><author><name></name></author><category term="tutorial" /><category term="projection" /><category term="glsl" /><category term="threejs" /><summary type="html"><![CDATA[In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.]]></summary></entry><entry><title type="html">Navigation Arrow</title><link href="https://askhento.github.io/tutorial/2022/10/07/navigation-arrow.html" rel="alternate" type="text/html" title="Navigation Arrow" /><published>2022-10-07T00:00:00+00:00</published><updated>2022-10-07T00:00:00+00:00</updated><id>https://askhento.github.io/tutorial/2022/10/07/navigation-arrow</id><content type="html" xml:base="https://askhento.github.io/tutorial/2022/10/07/navigation-arrow.html"><![CDATA[]]></content><author><name></name></author><category term="tutorial" /><category term="glsl" /><category term="js" /><category term="game" /><category term="shader" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">threejs-test</title><link href="https://askhento.github.io/tests/2022/09/02/threejs-test.html" rel="alternate" type="text/html" title="threejs-test" /><published>2022-09-02T00:00:00+00:00</published><updated>2022-09-02T00:00:00+00:00</updated><id>https://askhento.github.io/tests/2022/09/02/threejs-test</id><content type="html" xml:base="https://askhento.github.io/tests/2022/09/02/threejs-test.html"><![CDATA[<p>Hi this is some test scene with ThreeJS library.</p>
+
+<p>I know it is a little bit distracting and I will not use it everywhere but still I dand a lot fun making it!</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Help!</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">THREE</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">/assets/scripts/three.js</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">scene</span><span class="p">,</span> <span class="nx">renderer</span><span class="p">,</span> <span class="nx">camera</span><span class="p">,</span> <span class="nx">controls</span><span class="p">,</span> <span class="nx">cube</span><span class="p">;</span>
+</code></pre></div></div>
+
+<style>
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  main {
+    width: 100vw;
+    z-index: 99;
+    position: absolute;
+  }
+
+  /* .post {
+    background-color: #000000ac;
+  } */
+</style>
+
+<!-- <script src="/assets/scripts/three.js"></script>
+<script src="/assets/scripts/OrbitControls.js"></script> -->
+
+<!-- shader for bird's position -->
+<script id="fragmentShaderPosition" type="x-shader/x-fragment">
+
+  uniform float time;
+  uniform float delta;
+
+  void main()	{
+
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      vec4 tmpPos = texture2D( texturePosition, uv );
+      vec3 position = tmpPos.xyz;
+      vec3 velocity = texture2D( textureVelocity, uv ).xyz;
+
+      float phase = tmpPos.w;
+
+      phase = mod( ( phase + delta +
+          length( velocity.xz ) * delta * 3. +
+          max( velocity.y, 0.0 ) * delta * 6. ), 62.83 );
+
+      gl_FragColor = vec4( position + velocity * delta * 15. , phase );
+
+  }
+</script>
+
+<!-- shader for bird's velocity -->
+<script id="fragmentShaderVelocity" type="x-shader/x-fragment">
+
+  uniform float time;
+  uniform float testing;
+  uniform float delta; // about 0.016
+  uniform float separationDistance; // 20
+  uniform float alignmentDistance; // 40
+  uniform float cohesionDistance; //
+  uniform float freedomFactor;
+  uniform vec3 predator;
+
+  const float width = resolution.x;
+  const float height = resolution.y;
+
+  const float PI = 3.141592653589793;
+  const float PI_2 = PI * 2.0;
+  // const float VISION = PI * 0.55;
+
+  float zoneRadius = 40.0;
+  float zoneRadiusSquared = 1600.0;
+
+  float separationThresh = 0.45;
+  float alignmentThresh = 0.65;
+
+  const float UPPER_BOUNDS = BOUNDS;
+  const float LOWER_BOUNDS = -UPPER_BOUNDS;
+
+  const float SPEED_LIMIT = 9.0;
+
+  float rand( vec2 co ){
+      return fract( sin( dot( co.xy, vec2(12.9898,78.233) ) ) * 43758.5453 );
+  }
+
+  void main() {
+
+      zoneRadius = separationDistance + alignmentDistance + cohesionDistance;
+      separationThresh = separationDistance / zoneRadius;
+      alignmentThresh = ( separationDistance + alignmentDistance ) / zoneRadius;
+      zoneRadiusSquared = zoneRadius * zoneRadius;
+
+
+      vec2 uv = gl_FragCoord.xy / resolution.xy;
+      vec3 birdPosition, birdVelocity;
+
+      vec3 selfPosition = texture2D( texturePosition, uv ).xyz;
+      vec3 selfVelocity = texture2D( textureVelocity, uv ).xyz;
+
+      float dist;
+      vec3 dir; // direction
+      float distSquared;
+
+      float separationSquared = separationDistance * separationDistance;
+      float cohesionSquared = cohesionDistance * cohesionDistance;
+
+      float f;
+      float percent;
+
+      vec3 velocity = selfVelocity;
+
+      float limit = SPEED_LIMIT;
+
+      dir = predator * UPPER_BOUNDS - selfPosition;
+      dir.z = 0.;
+      // dir.z *= 0.6;
+      dist = length( dir );
+      distSquared = dist * dist;
+
+      float preyRadius = 150.0;
+      float preyRadiusSq = preyRadius * preyRadius;
+
+
+      // move birds away from predator
+      if ( dist < preyRadius ) {
+
+          f = ( distSquared / preyRadiusSq - 1.0 ) * delta * 100.;
+          velocity += normalize( dir ) * f;
+          limit += 5.0;
+      }
+
+
+      // if (testing == 0.0) {}
+      // if ( rand( uv + time ) < freedomFactor ) {}
+
+
+      // Attract flocks to the center
+      vec3 central = vec3( 0., 0., 0. );
+      dir = selfPosition - central;
+      dist = length( dir );
+
+      dir.y *= 2.5;
+      velocity -= normalize( dir ) * delta * 5.;
+
+      for ( float y = 0.0; y < height; y++ ) {
+          for ( float x = 0.0; x < width; x++ ) {
+
+              vec2 ref = vec2( x + 0.5, y + 0.5 ) / resolution.xy;
+              birdPosition = texture2D( texturePosition, ref ).xyz;
+
+              dir = birdPosition - selfPosition;
+              dist = length( dir );
+
+              if ( dist < 0.0001 ) continue;
+
+              distSquared = dist * dist;
+
+              if ( distSquared > zoneRadiusSquared ) continue;
+
+              percent = distSquared / zoneRadiusSquared;
+
+              if ( percent < separationThresh ) { // low
+
+                  // Separation - Move apart for comfort
+                  f = ( separationThresh / percent - 1.0 ) * delta;
+                  velocity -= normalize( dir ) * f;
+
+              } else if ( percent < alignmentThresh ) { // high
+
+                  // Alignment - fly the same direction
+                  float threshDelta = alignmentThresh - separationThresh;
+                  float adjustedPercent = ( percent - separationThresh ) / threshDelta;
+
+                  birdVelocity = texture2D( textureVelocity, ref ).xyz;
+
+                  f = ( 0.5 - cos( adjustedPercent * PI_2 ) * 0.5 + 0.5 ) * delta;
+                  velocity += normalize( birdVelocity ) * f;
+
+              } else {
+
+                  // Attraction / Cohesion - move closer
+                  float threshDelta = 1.0 - alignmentThresh;
+                  float adjustedPercent;
+                  if( threshDelta == 0. ) adjustedPercent = 1.;
+                  else adjustedPercent = ( percent - alignmentThresh ) / threshDelta;
+
+                  f = ( 0.5 - ( cos( adjustedPercent * PI_2 ) * -0.5 + 0.5 ) ) * delta;
+
+                  velocity += normalize( dir ) * f;
+
+              }
+
+          }
+
+      }
+
+
+
+      // this make tends to fly around than down or up
+      // if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
+
+      // Speed Limits
+      if ( length( velocity ) > limit ) {
+          velocity = normalize( velocity ) * limit;
+      }
+
+      gl_FragColor = vec4( velocity, 1.0 );
+
+  }
+</script>
+
+<script type="x-shader/x-vertex" id="birdVS">
+
+  attribute vec2 reference;
+  attribute float birdVertex;
+
+  attribute vec3 birdColor;
+
+  uniform sampler2D texturePosition;
+  uniform sampler2D textureVelocity;
+
+  varying vec4 vColor;
+  varying float z;
+
+  uniform float time;
+
+  void main() {
+
+      vec4 tmpPos = texture2D( texturePosition, reference );
+      vec3 pos = tmpPos.xyz;
+      vec3 velocity = normalize(texture2D( textureVelocity, reference ).xyz);
+
+      vec3 newPosition = position;
+
+      if ( birdVertex == 4.0 || birdVertex == 7.0 ) {
+          // flap wings
+          newPosition.y = sin( tmpPos.w ) * 5.;
+      }
+
+      newPosition = mat3( modelMatrix ) * newPosition;
+
+
+      velocity.z *= -1.;
+      float xz = length( velocity.xz );
+      float xyz = 1.;
+      float x = sqrt( 1. - velocity.y * velocity.y );
+
+      float cosry = velocity.x / xz;
+      float sinry = velocity.z / xz;
+
+      float cosrz = x / xyz;
+      float sinrz = velocity.y / xyz;
+
+      mat3 maty =  mat3(
+          cosry, 0, -sinry,
+          0    , 1, 0     ,
+          sinry, 0, cosry
+
+      );
+
+      mat3 matz =  mat3(
+          cosrz , sinrz, 0,
+          -sinrz, cosrz, 0,
+          0     , 0    , 1
+      );
+
+      newPosition =  maty * matz * newPosition;
+      newPosition += pos;
+
+      z = newPosition.z;
+
+      vColor = vec4( birdColor, 1.0 );
+      gl_Position = projectionMatrix *  viewMatrix  * vec4( newPosition, 1.0 );
+  }
+</script>
+
+<!-- bird geometry shader -->
+<script type="x-shader/x-fragment" id="birdFS">
+
+  varying vec4 vColor;
+  varying float z;
+
+  uniform vec3 color;
+
+  void main() {
+      // Fake colors for now
+      float z2 = 0.2 + ( 1000. - z ) / 1000. * vColor.x;
+      gl_FragColor = vec4( z2, z2, z2, 1. );
+
+  }
+</script>
+
+<!-- <script type="importmap">
+  {
+    "imports": {
+      "three": "../build/three.module.js",
+      "three/addons/": "./jsm/"
+    }
+  }
+</script> -->
+
+<script type="module">
+  const postBody = document.getElementsByClassName("post-content")[0];
+  postBody.style.backgroundColor = "black";
+
+  import * as THREE from "/assets/scripts/three.js";
+
+  import Stats from "/assets/scripts/stats.module.js";
+  import { GUI } from "/assets/scripts/lil-gui.module.min.js";
+
+  import { GPUComputationRenderer } from "/assets/scripts/GPUComputationRenderer.js";
+
+  /* TEXTURE WIDTH FOR SIMULATION */
+  const WIDTH = 32;
+
+  const BIRDS = WIDTH * WIDTH;
+
+  // Custom Geometry - using 3 triangles each. No UVs, no normals currently.
+  class BirdGeometry extends THREE.BufferGeometry {
+    constructor() {
+      super();
+
+      const trianglesPerBird = 3;
+      const triangles = BIRDS * trianglesPerBird;
+      const points = triangles * 3;
+
+      const vertices = new THREE.BufferAttribute(
+        new Float32Array(points * 3),
+        3
+      );
+      const birdColors = new THREE.BufferAttribute(
+        new Float32Array(points * 3),
+        3
+      );
+      const references = new THREE.BufferAttribute(
+        new Float32Array(points * 2),
+        2
+      );
+      const birdVertex = new THREE.BufferAttribute(new Float32Array(points), 1);
+
+      this.setAttribute("position", vertices);
+      this.setAttribute("birdColor", birdColors);
+      this.setAttribute("reference", references);
+      this.setAttribute("birdVertex", birdVertex);
+
+      // this.setAttribute( 'normal', new Float32Array( points * 3 ), 3 );
+
+      let v = 0;
+
+      function verts_push() {
+        for (let i = 0; i < arguments.length; i++) {
+          vertices.array[v++] = arguments[i];
+        }
+      }
+
+      const wingsSpan = 20;
+
+      for (let f = 0; f < BIRDS; f++) {
+        // Body
+
+        verts_push(0, -0, -20, 0, 4, -20, 0, 0, 30);
+
+        // Wings
+
+        verts_push(0, 0, -15, -wingsSpan, 0, 0, 0, 0, 15);
+
+        verts_push(0, 0, 15, wingsSpan, 0, 0, 0, 0, -15);
+      }
+
+      for (let v = 0; v < triangles * 3; v++) {
+        const triangleIndex = ~~(v / 3);
+        const birdIndex = ~~(triangleIndex / trianglesPerBird);
+        const x = (birdIndex % WIDTH) / WIDTH;
+        const y = ~~(birdIndex / WIDTH) / WIDTH;
+
+        const c = new THREE.Color(0x444444 + (~~(v / 9) / BIRDS) * 0x666666);
+
+        birdColors.array[v * 3 + 0] = c.r;
+        birdColors.array[v * 3 + 1] = c.g;
+        birdColors.array[v * 3 + 2] = c.b;
+
+        references.array[v * 2] = x;
+        references.array[v * 2 + 1] = y;
+
+        birdVertex.array[v] = v % 9;
+      }
+
+      this.scale(0.2, 0.2, 0.2);
+    }
+  }
+
+  //
+
+  let container, stats;
+  let camera, scene, renderer;
+  let mouseX = 0,
+    mouseY = 0;
+
+  let windowHalfX = window.innerWidth / 2;
+  let windowHalfY = window.innerHeight / 2;
+
+  const BOUNDS = 1000,
+    BOUNDS_HALF = BOUNDS / 2;
+
+  let last = performance.now();
+
+  let gpuCompute;
+  let velocityVariable;
+  let positionVariable;
+  let positionUniforms;
+  let velocityUniforms;
+  let birdUniforms;
+
+  init();
+  animate();
+
+  function init() {
+    // container = document.createElement( 'div' );
+    // document.body.appendChild( container );
+
+    camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      1,
+      3000
+    );
+    camera.position.z = 350;
+
+    scene = new THREE.Scene();
+
+    const spaceTexture = new THREE.TextureLoader().load(
+      "/assets/images/space-bg2.jpg"
+    );
+    scene.background = spaceTexture;
+
+    scene.fog = new THREE.Fog(0xffffff, 100, 1000);
+
+    const canvas = document.createElement("canvas");
+    canvas.id = "bg";
+    document.body.appendChild(canvas);
+
+    renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+    });
+
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    initComputeRenderer();
+
+    stats = new Stats();
+    canvas.appendChild(stats.dom);
+
+    canvas.style.touchAction = "none";
+    canvas.parentElement.addEventListener("pointermove", onPointerMove);
+
+    //
+
+    window.addEventListener("resize", onWindowResize);
+
+    const gui = new GUI();
+
+    const effectController = {
+      separation: 20.0,
+      alignment: 20.0,
+      cohesion: 20.0,
+      freedom: 0.75,
+    };
+
+    const valuesChanger = function () {
+      velocityUniforms["separationDistance"].value =
+        effectController.separation;
+      velocityUniforms["alignmentDistance"].value = effectController.alignment;
+      velocityUniforms["cohesionDistance"].value = effectController.cohesion;
+      velocityUniforms["freedomFactor"].value = effectController.freedom;
+    };
+
+    valuesChanger();
+
+    gui
+      .add(effectController, "separation", 0.0, 100.0, 1.0)
+      .onChange(valuesChanger);
+    gui
+      .add(effectController, "alignment", 0.0, 100, 0.001)
+      .onChange(valuesChanger);
+    gui
+      .add(effectController, "cohesion", 0.0, 100, 0.025)
+      .onChange(valuesChanger);
+    gui.close();
+
+    initBirds();
+  }
+
+  function initComputeRenderer() {
+    gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+
+    if (renderer.capabilities.isWebGL2 === false) {
+      gpuCompute.setDataType(THREE.HalfFloatType);
+    }
+
+    const dtPosition = gpuCompute.createTexture();
+    const dtVelocity = gpuCompute.createTexture();
+    fillPositionTexture(dtPosition);
+    fillVelocityTexture(dtVelocity);
+
+    velocityVariable = gpuCompute.addVariable(
+      "textureVelocity",
+      document.getElementById("fragmentShaderVelocity").textContent,
+      dtVelocity
+    );
+    positionVariable = gpuCompute.addVariable(
+      "texturePosition",
+      document.getElementById("fragmentShaderPosition").textContent,
+      dtPosition
+    );
+
+    gpuCompute.setVariableDependencies(velocityVariable, [
+      positionVariable,
+      velocityVariable,
+    ]);
+    gpuCompute.setVariableDependencies(positionVariable, [
+      positionVariable,
+      velocityVariable,
+    ]);
+
+    positionUniforms = positionVariable.material.uniforms;
+    velocityUniforms = velocityVariable.material.uniforms;
+
+    positionUniforms["time"] = { value: 0.0 };
+    positionUniforms["delta"] = { value: 0.0 };
+    velocityUniforms["time"] = { value: 1.0 };
+    velocityUniforms["delta"] = { value: 0.0 };
+    velocityUniforms["testing"] = { value: 1.0 };
+    velocityUniforms["separationDistance"] = { value: 1.0 };
+    velocityUniforms["alignmentDistance"] = { value: 1.0 };
+    velocityUniforms["cohesionDistance"] = { value: 1.0 };
+    velocityUniforms["freedomFactor"] = { value: 1.0 };
+    velocityUniforms["predator"] = { value: new THREE.Vector3() };
+    velocityVariable.material.defines.BOUNDS = BOUNDS.toFixed(2);
+
+    velocityVariable.wrapS = THREE.RepeatWrapping;
+    velocityVariable.wrapT = THREE.RepeatWrapping;
+    positionVariable.wrapS = THREE.RepeatWrapping;
+    positionVariable.wrapT = THREE.RepeatWrapping;
+
+    const error = gpuCompute.init();
+
+    if (error !== null) {
+      console.error(error);
+    }
+  }
+
+  function initBirds() {
+    const geometry = new BirdGeometry();
+
+    // For Vertex and Fragment
+    birdUniforms = {
+      color: { value: new THREE.Color(0xff2200) },
+      texturePosition: { value: null },
+      textureVelocity: { value: null },
+      time: { value: 1.0 },
+      delta: { value: 0.0 },
+    };
+
+    // THREE.ShaderMaterial
+    const material = new THREE.ShaderMaterial({
+      uniforms: birdUniforms,
+      vertexShader: document.getElementById("birdVS").textContent,
+      fragmentShader: document.getElementById("birdFS").textContent,
+      side: THREE.DoubleSide,
+    });
+
+    const birdMesh = new THREE.Mesh(geometry, material);
+    birdMesh.rotation.y = Math.PI / 2;
+    birdMesh.matrixAutoUpdate = false;
+    birdMesh.updateMatrix();
+
+    scene.add(birdMesh);
+  }
+
+  function fillPositionTexture(texture) {
+    const theArray = texture.image.data;
+
+    for (let k = 0, kl = theArray.length; k < kl; k += 4) {
+      const x = Math.random() * BOUNDS - BOUNDS_HALF;
+      const y = Math.random() * BOUNDS - BOUNDS_HALF;
+      const z = Math.random() * BOUNDS - BOUNDS_HALF;
+
+      theArray[k + 0] = x;
+      theArray[k + 1] = y;
+      theArray[k + 2] = z;
+      theArray[k + 3] = 1;
+    }
+  }
+
+  function fillVelocityTexture(texture) {
+    const theArray = texture.image.data;
+
+    for (let k = 0, kl = theArray.length; k < kl; k += 4) {
+      const x = Math.random() - 0.5;
+      const y = Math.random() - 0.5;
+      const z = Math.random() - 0.5;
+
+      theArray[k + 0] = x * 10;
+      theArray[k + 1] = y * 10;
+      theArray[k + 2] = z * 10;
+      theArray[k + 3] = 1;
+    }
+  }
+
+  function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function onPointerMove(event) {
+    if (event.isPrimary === false) return;
+
+    mouseX = event.clientX - windowHalfX;
+    mouseY = event.clientY - windowHalfY;
+  }
+
+  //
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    render();
+    stats.update();
+  }
+
+  function render() {
+    const now = performance.now();
+    let delta = (now - last) / 1000;
+
+    if (delta > 1) delta = 1; // safety cap on large deltas
+    last = now;
+
+    positionUniforms["time"].value = now;
+    positionUniforms["delta"].value = delta;
+    velocityUniforms["time"].value = now;
+    velocityUniforms["delta"].value = delta;
+    birdUniforms["time"].value = now;
+    birdUniforms["delta"].value = delta;
+
+    velocityUniforms["predator"].value.set(
+      (0.5 * mouseX) / windowHalfX,
+      (-0.5 * mouseY) / windowHalfY,
+      0
+    );
+
+    mouseX = 10000;
+    mouseY = 10000;
+
+    gpuCompute.compute();
+
+    birdUniforms["texturePosition"].value =
+      gpuCompute.getCurrentRenderTarget(positionVariable).texture;
+    birdUniforms["textureVelocity"].value =
+      gpuCompute.getCurrentRenderTarget(velocityVariable).texture;
+
+    renderer.render(scene, camera);
+  }
+</script>]]></content><author><name></name></author><category term="tests" /><category term="glsl" /><category term="webgl" /><summary type="html"><![CDATA[Hi this is some test scene with ThreeJS library.]]></summary></entry><entry><title type="html">Automate post creation with github comments</title><link href="https://askhento.github.io/hacks/webdev/2022/09/01/comments-generation.html" rel="alternate" type="text/html" title="Automate post creation with github comments" /><published>2022-09-01T00:00:00+00:00</published><updated>2022-09-01T00:00:00+00:00</updated><id>https://askhento.github.io/hacks/webdev/2022/09/01/comments-generation</id><content type="html" xml:base="https://askhento.github.io/hacks/webdev/2022/09/01/comments-generation.html"><![CDATA[<h3 id="motivation">Motivation</h3>
+
+<p>Let’s be honest, I use github issues to host comments on this site. It is great, but I found it difficult to create issues manually so here is an attemp to document my journey on automatic post creation script.</p>
+
+<p>For thos of who also would like to add comments please read the article <a href="https://www.aleksandrhovhannisyan.com/blog/jekyll-comment-system-github-issues/">Jekyll comment system github issues</a> by Aleksandr Hovhannisyan.</p>
+
+<h3 id="googling">Googling</h3>
+
+<p>I am looking for something that will use VS Code
+After some time of surfing the internet I decided to use tasks in VSCode to run <a href="https://github.com/cli/cli">github cli tool</a> here is how to install it with brew (MacOS but other platform available too):</p>
+
+<h3 id="github-api">Github API</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>gh
+</code></pre></div></div>
+
+<p>This cli tool require authentication, so you need to run and follow steps. I choose to use my credetials, but probably it is better to create PAT(personal access token).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gh auth login
+</code></pre></div></div>
+
+<p>Anyways lets check how it works changing directory to git repository and then run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>YourSiteFolder
+gh issue list
+</code></pre></div></div>
+
+<p>You should see a file with issue names, tags, labels, date updated. So far so good, let’s move on!</p>
+
+<h3 id="create-vscode-task">Create VSCode task</h3>
+
+<p>Press <kbd>CMD+SHIFT+P</kbd> inside VSCode and then type “task” and choose “Run Task”. You don’t have any tasks so choose “Create new Task”.</p>
+
+<p>VSCode will create tasks.json file inside .vscode folder and with some boilerplate code. Here is how my tasks.json look like right now:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">See</span><span class="w"> </span><span class="err">https://go.microsoft.com/fwlink/?LinkId=</span><span class="mi">733558</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">documentation</span><span class="w"> </span><span class="err">about</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">tasks.json</span><span class="w"> </span><span class="err">format</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tasks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Create Post"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python3 create_post.py </span><span class="se">\"</span><span class="s2">${input:title}</span><span class="se">\"</span><span class="s2"> ${input:comments} ${input:categories} ${input:tags}"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"problemMatcher"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"title"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Set title"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cool-title"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"promptString"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comments"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Add comments?"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"yes"</span><span class="p">,</span><span class="w"> </span><span class="s2">"no"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pickString"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"categories"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Set some categories"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"post"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"promptString"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tags"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Set some tags"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"awesome-tag"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"promptString"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Tasks - commands you would like to run.
+Inputs - this is arguments which will be used when you run the task, they could be strings(promptString) or list of strings (pickString). When you will run your task some usefull prompts will appear to help filling default values.</p>
+
+<h3 id="python-script">Python script</h3>
+
+<p>First of all I will imort modules:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">argparse</span> <span class="c1"># for using cli arguments
+</span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="c1"># posts need to be formated with date
+</span><span class="kn">import</span> <span class="nn">subprocess</span> <span class="c1"># run gh-cli from python :D
+</span><span class="kn">import</span> <span class="nn">re</span> <span class="c1"># regular expressions
+</span></code></pre></div></div>
+
+<p>Let’s parse our arguments:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">'Create a new post'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"title"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Provide a title"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"comments"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Provide a title"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"categories"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Provide a comma separated list of categories"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">"tags"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Provide a comma separated list of tags"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>Here argparse module will take care of all for us. You have to careful not to use type=bool, because it will always be True.</p>
+
+<p>Next we need to get time:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="c1">#previous code
+</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"%H:%M:%S"</span><span class="p">)</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">current_time</span> <span class="o">=</span> <span class="n">current_time</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
+    <span class="n">args</span><span class="p">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+</code></pre></div></div>
+
+<p>The most difficult part is github api. We need to create issue and then parse issue_id from url.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="c1">#previous code
+</span>
+    <span class="n">create_issue_cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"echo $(gh issue create --title </span><span class="se">\"</span><span class="s">Comments for </span><span class="si">{</span><span class="n">format_filename</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">date</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">title</span><span class="p">)</span><span class="si">}</span><span class="se">\"</span><span class="s"> --body </span><span class="se">\"</span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">title</span><span class="si">}</span><span class="s"> discussion here:</span><span class="se">\"</span><span class="s"> --label </span><span class="se">\"</span><span class="s">comments</span><span class="se">\"</span><span class="s">)"</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">create_issue_cmd</span><span class="p">)</span>
+
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">create_issue_cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="p">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1"># Store the return code in rc variable
+</span>    <span class="n">rc</span> <span class="o">=</span> <span class="n">process</span><span class="p">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="n">issue_url</span><span class="p">,</span><span class="n">err</span> <span class="o">=</span> <span class="n">process</span><span class="p">.</span><span class="n">communicate</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span> <span class="c1"># non zero code == error
+</span>        <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">issue_url</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Subprocess is the module to run shell commands from python. Parameters to note :</p>
+
+<ul>
+  <li>shell - will run as a real shell with all environment variables.</li>
+  <li>universal_newlines - will convert results from binary representation</li>
+</ul>
+
+<p>I wrapped command to create issue inside echo, so that shell will not open file with vim in my case.
+Finally lets use regular expressions to parse issue_id:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="c1">#previous code
+</span>
+    <span class="c1"># Example url, here we need to get "2"
+</span>    <span class="c1"># issue_url="https://github.com/Askhento/Askhento.github.io/issues/2"
+</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s">'\d+$'</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">issue_url</span><span class="p">).</span><span class="n">group</span><span class="p">()</span>
+        <span class="n">args</span><span class="p">.</span><span class="n">comments_id</span> <span class="o">=</span> <span class="n">match</span>
+    <span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+        <span class="c1"># print('No match')
+</span>
+    <span class="n">write_frontmatter</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="c1"># write to file function
+</span>
+</code></pre></div></div>
+
+<p>Regular expression ‘\d+$’ means :</p>
+
+<ul>
+  <li>\d - match digit</li>
+  <li>+ - one or more</li>
+  <li>$ - match at the end
+To test you expression you can use online tools like <a href="https://regexr.com">regexr</a>.</li>
+</ul>
+
+<p>Here is write_frontmatter and helper function function without much of explanation:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">format_filename</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s">'</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s">-</span><span class="si">{</span><span class="n">title</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"-"</span><span class="p">).</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s">.markdown'</span>
+
+<span class="k">def</span> <span class="nf">write_frontmatter</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s">"./_posts/</span><span class="si">{</span><span class="n">format_filename</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">date</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">title</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"---</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"layout: post</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s">"title: </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s">"comments_id"</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s">"comments_id: </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">comments_id</span> <span class="si">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"published: true</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s">"categories: </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">categories</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s">"tags: </span><span class="si">{</span><span class="n">args</span><span class="p">.</span><span class="n">tags</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"---</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<h3 id="run-it">Run it!</h3>
+
+<p>So here it is! You can now run the task to create new posts. Keep in mind that it will create a new issue for every new post and will override post with the same date+title.</p>]]></content><author><name></name></author><category term="hacks" /><category term="webdev" /><category term="python" /><category term="jekyll" /><category term="gh-pages" /><category term="comments" /><summary type="html"><![CDATA[Motivation]]></summary></entry><entry><title type="html">Some good software finds</title><link href="https://askhento.github.io/good_soft/2022/08/31/software-finds.html" rel="alternate" type="text/html" title="Some good software finds" /><published>2022-08-31T21:55:41+00:00</published><updated>2022-08-31T21:55:41+00:00</updated><id>https://askhento.github.io/good_soft/2022/08/31/software-finds</id><content type="html" xml:base="https://askhento.github.io/good_soft/2022/08/31/software-finds.html"><![CDATA[<p><a href="https://github.com/akx/paulstretch/releases/tag/v2.2-3">PaulStretch</a> for MacOS Catalina is something I was looking for a long time. This program gives you an oppotunity to create beautiful ambient sound tracks!</p>
+
+<p><img width="1107" alt="image" src="https://user-images.githubusercontent.com/34323808/187793958-4a7e320a-5e49-4c9b-a1aa-07ee1b47ae73.png" /></p>
+
+<p><a href="http://www.falstad.com/circuit/">Falstad Circuit</a> is an awesome applet written in java and then ported to some other platforms. You can create analog and digital circuits and simulate them in real time. Here is <a href="http://www.falstad.com/circuit/offline/">MacOS/Linux/Win versions</a>, <a href="http://www.falstad.com/circuit/jsinterface.html">JS version</a>.</p>
+
+<p><img width="912" alt="image" src="https://user-images.githubusercontent.com/34323808/187794026-73650de6-8f38-401f-88e3-417414ea712b.png" /></p>]]></content><author><name></name></author><category term="good_soft" /><category term="software" /><summary type="html"><![CDATA[PaulStretch for MacOS Catalina is something I was looking for a long time. This program gives you an oppotunity to create beautiful ambient sound tracks!]]></summary></entry></feed>

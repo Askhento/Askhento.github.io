@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Matrix transformations for visual learners | Askhat Mudarisov</title>
+<meta name="generator" content="Jekyll v3.10.0">
+<meta property="og:title" content="Matrix transformations for visual learners">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.">
+<meta property="og:description" content="In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.">
+<link rel="canonical" href="https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html">
+<meta property="og:url" content="https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html">
+<meta property="og:site_name" content="Askhat Mudarisov">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-10-11T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Matrix transformations for visual learners">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-11T00:00:00+00:00","datePublished":"2022-10-11T00:00:00+00:00","description":"In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.","headline":"Matrix transformations for visual learners","mainEntityOfPage":{"@type":"WebPage","@id":"https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html"},"url":"https://askhento.github.io/tutorial/2022/10/11/matrix-transformations-for-visual-learners.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="manifest" href="/assets/images/site.webmanifest">
+  <link rel="mask-icon" href="/assets/images/safari-pinned-tab.svg" color="#abd55b">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <script src="/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://askhento.github.io/feed.xml" title="Askhat Mudarisov">
+<!-- <link
+  rel="stylesheet"
+  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css"
+/> -->
+<link rel="stylesheet" title="Atom One Dark" href="/assets/css/atom-one-dark.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+  .copy-code-button {
+    background-color: #bcbcbc95;
+    border: 2px solid #5757578a;
+    color: rgb(151, 151, 151);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 15px 20px;
+    text-align: center;
+    /* display: block; */
+    font-size: 16px;
+    border-radius: 2px;
+    transition-duration: 0.4s;
+    /* float:right; */
+  }
+
+  .copy-code-button:hover, .copy-code-button.copied{
+    background-color: #f1f1f1; /* Green */
+    border: 2px solid #303030;
+    color: rgb(42, 42, 42);
+  }
+
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<script>
+  // Init highlight js
+  document.addEventListener("DOMContentLoaded", function (event) {
+    var els = document.querySelectorAll("pre code");
+
+    function addLangData(block) {
+      var outer = block.parentElement.parentElement.parentElement;
+      var lang = block.getAttribute("data-lang");
+      for (var i = 0; i < outer.classList.length; i++) {
+        var cls = outer.classList[i];
+        if (cls.startsWith("language-")) {
+          lang = cls;
+          break;
+        }
+      }
+      if (!lang) {
+        cls = block.getAttribute("class");
+        lang = cls ? cls.replace("hljs ", "") : "";
+      }
+      if (lang.startsWith("language-")) {
+        lang = lang.substr(9);
+      }
+      block.setAttribute("class", "hljs " + lang);
+      block.parentNode.setAttribute("data-lang", lang);
+    }
+
+    function addCopyButton(block) {
+      const copyCodeButton = document.createElement("button");
+      // Set the button text to 'Can you click me?'
+      copyCodeButton.innerText = "COPY!";
+      copyCodeButton.classList.add("copy-code-button");
+      // copyCodeButton.classList.add("hljs");
+
+      block.parentElement.appendChild(copyCodeButton);
+
+      const code = block.innerText;
+
+      copyCodeButton.addEventListener("click", (event) => {
+        // Copy the code to the user's clipboard
+        window.navigator.clipboard.writeText(code);
+
+        copyCodeButton.innerText = "DONE!";
+        copyCodeButton.classList.add("copied");
+
+        // After 2 seconds, reset the button to its initial UI
+        setTimeout(() => {
+          copyCodeButton.innerText = "COPY!";
+          copyCodeButton.classList.remove("copied");
+        }, 2000);
+      });
+    }
+
+    function addBadge(block) {
+      var enabled = ("true" || "true").toLowerCase();
+      if (enabled == "true") {
+        var pre = block.parentElement;
+        pre.classList.add("badge");
+      }
+    }
+
+    function handle(block) {
+      addLangData(block);
+      addBadge(block);
+      addCopyButton(block);
+      hljs.highlightBlock(block);
+    }
+
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      handle(el);
+    }
+  });
+</script>
+<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/">
+  <img class="site-favicon" title="Askhat Mudarisov" src="" onerror="this.style.display='none'">
+  Askhat Mudarisov
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/archives.html">ARCHIVES</a><a class="page-link" href="/categories.html">CATEGORIES</a><a class="page-link" href="/home.html">HOME</a><a class="page-link" href="/tags.html">TAGS</a>
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('on' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Matrix transformations for visual learners</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-10-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 11, 2022
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/tags.html#projection">#projection</a><a class="post-tag" href="/tags.html#glsl">#glsl</a><a class="post-tag" href="/tags.html#threejs">#threejs</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>In this tutorial I will try to explain how all theese transformation matrices with some help of visuals.</p>
+
+<h3 id="initial" class="state_transition">What is a Matrix?</h3>
+
+<p>Matrix is not film, sorry.
+Matrix is like a table of numbers with one or more dimentions. They have some rules that we have to obey in order to use them in our advantage.</p>
+
+<p>In computer graphics you will see that 4x4 matrix in use, they can express <span style="color:green">translate</span>, <span style="color:purple">scale</span> and <span style="color:red">rotation</span> at the same time and using only multiplication to apply on vectors and combine together.</p>
+
+<p><span id="example_matrix_mathjax"></span></p>
+
+<p>Vectors are written with 4 elements : $\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}$</p>
+
+<p>We use 4x4 matrix because this is a nifty trick to use multiplication for all transformations. Last column of the matrix above does not have a physical maeaning as <span style="color:green">translate</span>, <span style="color:purple">scale</span> and <span style="color:red">rotation</span>, but it makes math so simple!</p>
+
+<p>There is two distinct options to write down a matrix and a vector - row and column major. This little thing is really important because if you mess with it you will get unpredictable result in your shaders.</p>
+
+<p>Math notation commonly use row-major vector looks like this : $\begin{bmatrix} x &amp; y &amp; z &amp; 1 \end{bmatrix}$</p>
+
+<p>OpenGL uses column-major and I will use it also: $\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}$</p>
+
+<p>You may ask yourself, does this matter? Aren’t they the same thing? I will tell you that they are completely different. Matrices is all about structure and order, and you should care about this things if you want to use their power.</p>
+
+<p>In order to transform a point by 4x4 matrix in column major form you need to apply matrix to the left :</p>
+
+<h3 id="how-to-use-matrix">How to use matrix</h3>
+
+<p>In order to use/apply a matrix you need to multiply it from the correct side of matrix or vector. Let’s say</p>
+
+<h3 id="why-do-we-need-matrix">Why do we need Matrix?</h3>
+
+<p>First time I saw a matrix I thought to myself that it is a very useless thing in math.
+Years came by and now I feel that I want to use matrix transformations everywhere! This is very handy mathematical tool that can abstract cumbersome computation away from your mind.</p>
+
+<h3 id="rules">Rules:</h3>
+
+<p>The only rule we need to know is that matrix mulitplication is not commutative :</p>
+
+<ul>
+  <li>$ A \cdot B \neq B \cdot A $</li>
+</ul>
+
+<details> 
+  <summary>There is some other rules which you can learn here. </summary>
+<h3> Commutative laws </h3>
+
+Addition order does not matter, but multiplication does. Very important one!
+
+<ul>
+    <li> $ A+B = B+A $ </li>
+    <li> $ A \cdot B \neq B \cdot A $ </li>
+</ul>
+
+<h3> Associative </h3>
+
+Group operations in any order you find useful
+
+<ul>
+    <li> $ A \cdot B \cdot C = A \cdot (B \cdot C) = (A \cdot B) \cdot C $ </li>
+    <li> $ A + B + C = A + (B + C) = (A + B) + C $ </li>
+</ul>
+<h3> Distributive </h3>
+Undo brackets as usual.
+<ul>
+    <li> $ A \cdot (B+C) = A \cdot B + A \cdot C $ </li>
+</ul>
+
+</details>
+
+<h3 id="initial_state" class="state_transition">Model Matrix</h3>
+<p>Here you can see the inital state of the scene with a textured cube and the camera. They both have the same transformartion matrix :</p>
+
+<p><span id="identity_matrix_mathjax"></span></p>
+
+<p>Which is Identity matrix. If you multiply this matrix with any other you will get the same matrix as before.</p>
+
+<p><button type="button" id="initial_btn" class="btn btn-primary active">Show Initial State</button></p>
+
+<h3 id="model_matrix" class="state_transition">Model Matrix</h3>
+
+<p>Every object in the scene will have a Model Matrix which represents all the transformations required to put object in world space for rendering.</p>
+
+<p><span id="model_matrix_mathjax"></span></p>
+
+<p><button type="button" id="model_btn" class="btn btn-primary active">Move to World Space</button></p>
+
+<h3 id="view_matrix" class="state_transition">View Matrix</h3>
+
+<p><button type="button" id="view_btn" class="btn btn-primary active">Move to Camera Space</button></p>
+
+<h3 id="projection_matrix" class="state_transition">Projection Matrix</h3>
+
+<p><button type="button" id="proj_btn" class="btn btn-primary active">Move to Projection Space</button></p>
+
+<style>
+    #threejs_container {
+        width: 50%;
+        /* height: 2500px; */
+        /* align-items: stretch; */
+        /* pointer-events: none; */
+    }
+
+    #threejs_wrapper {
+        display: flex;
+        justify-content: center;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 100px;
+    }
+
+    #threejs_canvas {
+        /* display: block; */
+        position: relative;
+        /* width: 95%;
+        height: 0%; */
+        width: 95%;
+        /* float: right; */
+        /* top: 0; */
+
+        /* padding-bottom: 60%; */
+        /* z-index: -1; */
+        pointer-events: auto;
+        border: solid 2px whitesmoke;
+        border-radius: 5px;
+    }
+
+    #threejs_labels {
+        height: 100%;
+        width: 100%;
+        color: white;
+    }
+
+    #transform_preview {
+        position: absolute;
+        top: 100%;
+        /* width: 200px; */
+        /* height: 300px; */
+    }
+
+    .wrapper {
+        max-width: none;
+    }
+
+    #gui {
+        top: 100px;
+        position: sticky;
+        position: -webkit-sticky;
+        float: right;
+    }
+</style>
+
+<!-- <canvas id="threejs_canvas"></canvas> -->
+
+<!-- <script src="https://unpkg.com/three@0.145.0/build/three.js"></script> -->
+<!-- <script src="/assets/scripts/three.js"></script> -->
+
+<script src="/assets/scripts/threejs_boilerplate.js" type="module"></script>
+
+<script id="fragmentShader-cube" type="x-shader/x-fragment">
+
+uniform float time;
+uniform float delta;
+
+varying vec2 vUV;
+varying vec4 vPos;
+
+uniform sampler2D map;
+
+void main()	{
+    vec3 pos = vPos.xyz / vPos.w;
+    
+    float edge = cos(time) * 0.5 + 1.5;
+    edge = 1.0;
+    vec3 outside = abs(pos); // step(vec3(edge), );
+    float outStep = max(max(outside.x, outside.y), outside.z);
+    vec4 diff = texture2D(map, vUV);
+    vec3 col  = mix(diff.xyz, diff.xyz * vec3(1.0, 0.0, 0.0), step(edge, outStep));
+    //if (!gl_FrontFacing) col = vec3(1.0, 0.0, 1.0);
+
+    gl_FragColor = vec4(col, 1.0);
+    //if (outStep > 0.0) discard;
+    gl_FragColor = diff;
+}
+</script>
+
+<script id="vertexShader-cube" type="x-shader/x-vertex">
+
+varying vec2 vUV;
+varying vec4 vPos;
+
+  void main() {
+    vUV = uv;
+
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+    //modelPosition.xyz /= modelPosition.w;
+
+    //modelPosition.w = 1.0;
+    vPos = modelPosition;
+    gl_Position = projectionMatrix * viewMatrix * modelPosition; 
+  }
+</script>
+
+<script src="/assets/scripts/tutorials/matrix_transform_visual.js" type="module">
+</script>
+
+
+    </div>
+
+</article>
+<div class="post-comments">
+        
+
+<section id="comments">
+  <div class="comment-actions">
+    <h2>Comments <span id="comments-count"></span>
+</h2>
+    <a class="button" href="https://github.com/Askhento/askhento.github.io/issues/7">Post comment</a>
+  </div>
+  <div id="comments-wrapper">Loading...</div>
+</section>
+
+<!-- Comments script -->
+<script>
+  const loadScript = (src) => {
+    const scriptElement = document.createElement("script");
+    document.body.appendChild(scriptElement);
+
+    return new Promise((resolve) => {
+      scriptElement.onload = resolve;
+
+      // Important to register onload before setting src
+      scriptElement.src = src;
+    });
+  };
+
+  const commentsSection = document.getElementById("comments");
+  const commentsWrapper = commentsSection.querySelector("#comments-wrapper");
+  const commentsCount = commentsSection.querySelector("#comments-count");
+
+  const fetchComments = async () => {
+    try {
+      const commentsURL =
+        "https://api.github.com/repos/Askhento/askhento.github.io/issues/7/comments";
+      const comments = await (await fetch(commentsURL)).json();
+      initRenderComments(comments);
+    } catch (e) {
+      commentsWrapper.innerHTML = `<p>Unable to retrieve the comments for this post.</p>`;
+    }
+  };
+
+  const commentScripts = [
+    "https://unpkg.com/marked@0.3.6/marked.min.js",
+    "https://unpkg.com/dompurify@1.0.8/dist/purify.min.js",
+    "https://unpkg.com/dayjs@1.8.21/dayjs.min.js",
+    "https://unpkg.com/dayjs@1.7.8/plugin/relativeTime.js",
+  ];
+
+  // Reminder: this gets called when the viewport intersects with the comments section
+  const initRenderComments = async (comments) => {
+    if (!comments.length) {
+      commentsWrapper.innerHTML = `<p>No comments yet 👀 Be the first to post!</p>`;
+      return;
+    }
+
+    // Load all comment script dependencies async
+    await Promise.all(commentScripts.map((script) => loadScript(script)));
+    renderComments(comments);
+  };
+
+  const renderComments = (comments) => {
+    // load the relativeTime plugin for dayjs so we can express dates relative to now
+    dayjs.extend(dayjs_plugin_relativeTime);
+
+    commentsCount.innerText = `(${comments.length})`;
+
+    const commentsList = document.createElement("ol");
+    commentsList.className = "comments-list";
+    commentsList.setAttribute("aria-label", "Comments on this blog post");
+
+    commentsList.innerHTML = comments
+      .sort((comment1, comment2) => {
+        return comment1.created_at < comment2.created_at ? 1 : -1;
+      })
+      .map((comment) => {
+        const datePosted = dayjs(comment.created_at).fromNow();
+        const user = comment.user;
+        const body = DOMPurify.sanitize(marked(comment.body));
+        const postedByAuthor = comment.author_association === "OWNER";
+        const edited = comment.created_at !== comment.updated_at;
+
+        /*
+<img src="${
+  user.avatar_url
+}" alt="" aria-hidden="true" class="post-comment-avatar circle">
+${
+  postedByAuthor
+    ? '<span class="post-comment-author" data-shape="round" data-size="xs">Author</span>'
+    : ""
+}
+${
+  edited
+    ? `<span class="post-comment-edited">Edited</span>`
+    : ""
+}
+*/
+        return `<li class="post">
+                    <article class="post-comment">
+                        <header class="flex align-center flex-wrap gap-0 relative">
+                            
+                            <a
+                                href="https://github.com/${user.login}"
+                                class="heading"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
+                                ${user.login}
+                            </a>
+                            <time datetime="${comment.created_at}">${datePosted}</time></div>
+             
+                        
+                        </header>
+                        <div class="post-comment-body">${comment.body}</div>
+                    </article>
+                 </li>`;
+      })
+      .join("");
+
+    commentsWrapper.innerHTML = "";
+    commentsWrapper.appendChild(commentsList);
+  };
+
+  const commentsObserver = new IntersectionObserver(
+    (entries, self) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          fetchComments(); // this is the important part
+          self.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: "200px 0px 0px 0px" }
+  );
+
+  commentsObserver.observe(commentsSection);
+</script>
+ 
+    </div>
+
+    <div class="post-nav">
+<a class="previous" href="/tutorial/2022/10/07/navigation-arrow.html" title="Navigation Arrow">Navigation Arrow</a><a class="next" href="/unity/2025/07/13/shadergraph-override-uniform.html" title="shadergraph-override-uniform">shadergraph-override-uniform</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+          <a class="post-link" href="/good_soft/2022/08/31/software-finds.html" title="shadergraph-override-uniform">Some good software finds</a>
+        </li>
+<li>
+          <a class="post-link" href="/tests/2022/09/02/threejs-test.html" title="shadergraph-override-uniform">threejs-test</a>
+        </li>
+<li>
+          <a class="post-link" href="/hacks/webdev/2022/09/01/comments-generation.html" title="shadergraph-override-uniform">Automate post creation with github comments</a>
+        </li>
+<li>
+          <a class="post-link" href="/unity/2025/07/13/shadergraph-override-uniform.html" title="shadergraph-override-uniform">shadergraph-override-uniform</a>
+        </li>
+</ul>
+    </div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div></div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
